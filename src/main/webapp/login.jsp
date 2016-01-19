@@ -1,86 +1,62 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<html lang="en"	class="app js no-touch no-android chrome no-firefox no-iemobile no-ie no-ie10 no-ie11 no-ios no-ios7 ipad">
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="session"/>
+<!DOCTYPE html >
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<!-- Google Chrome Frame也可以让IE用上Chrome的引擎: -->
-<meta http-equiv="X-UA-Compatible" content="IE=edge;chrome=1">
-<link href="http://shikezhi.com/favicon.ico" type="image/x-icon" rel=icon>
-<link href="http://shikezhi.com/favicon.ico" type="image/x-icon" rel="shortcut icon">
-<meta name="renderer" content="webkit">
-<title>BT-ADMIN-登录</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet"	href="${pageContext.servletContext.contextPath }/admin_files/min.css">
-<link rel="stylesheet"	href="${pageContext.servletContext.contextPath }/admin_files/login.css">
-<link	href="${pageContext.servletContext.contextPath }/admin_files/css.css"	rel="stylesheet" type="text/css">
-<!--[if lt IE 9]> 
-	<script src="${ctx}/js/jquery/ie/html5shiv.js"></script> 
-	<script src="${ctx}/js/jquery/ie/respond.min.js"></script>
-<![endif]-->
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="keywords" content="">
+	<meta http-equiv="description" content="">
+	<link type="image/vnd.microsoft.icon" href="<%=request.getContextPath()%>/images/icon/favicon.ico" rel="shortcut icon"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<!-- bootstrap CSS -->
+	<link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+	<title>BT-ADMIN登录</title>
+	<link href="${contextPath}/css/signin.css" rel="stylesheet"/>
 </head>
-<body onload="javascript:to_top()">
-	<div id="loginbox" style="padding-top: 10%;">
-		<form id="loginform" name="loginform" class="form-vertical"
-			style="background-color: rgba(0, 0, 0, 0.5) !important; background: #000; filter: alpha(opacity = 50); *background: #000; *filter: alpha(opacity = 50); /*黑色透明背景结束*/ color: #FFF; bottom: 0px; right: 0px; border: 1px solid #000;"
-			action="${pageContext.servletContext.contextPath }/login.shtml"
-			method="post">
-			<div class="control-group normal_text">
-				<table style="width: 100%">
-					<tr>
-						<td align="left"><img
-							src="${pageContext.servletContext.contextPath }/admin_files/logo_left.png"
-							alt="Logo"></td>
-							<td align="center" style="font-weight: bold;color: gray;">BT-Admin后台系统</td>
-						<td align="right"><img
-							src="${pageContext.servletContext.contextPath }/admin_files/logo_left.png"
-							alt="Logo"></td>
-					</tr>
-				</table>
-
-			</div>
-			<div class="control-group">
-				<div class="controls">
-					<div class="main_input_box">
-						<span class="add-on bg_ly" style="background: #28b779"><img
-							src="${pageContext.servletContext.contextPath }/admin_files/account_1.png"
-							alt="请输入账号.."></span><input type="text" placeholder="username" name="username" value="admin"
-							style="height: 32px; margin-bottom: 0px;"/>
-					</div>
-				</div>
-			</div>
-			<div class="control-group">
-				<div class="controls">
-					<div class="main_input_box">
-						<span class="add-on bg_ly"><img
-							src="${pageContext.servletContext.contextPath }/admin_files/lock_1.png"
-							alt="请输入密码.."></span><input type="password" placeholder="password" name="password" value="123456"
-							style="height: 32px; margin-bottom: 0px;"/>
-					</div>
-				</div>
-			</div>
-			<div class="form-actions">
-				<span class="pull-left" style="width: 33%"><a href="#"
-					class="flip-link btn btn-info" id="to-recover">忘记密码？</a></span>
-					<span class="pull-left" style="width: 33%"><a href="install.shtml"
-					class="flip-link btn btn-danger" id="to-recover">一键初始化系统</a></span>
-					 <span
-					class="pull-right"><a type="submit"
-					href="javascript:checkUserForm()" class="btn btn-success">登&nbsp;&nbsp;录</a></span>
-			</div>
-		</form>
+<body>
+<div id="topbar" class="clearfix">
+	<div class="logo" style="border-bottom: 1px solid #D9DFE1; padding: 1em 2em; text-align: right; background-color: #ffffff;">
+		<img id="logo-right" src="${contextPath}/images/logo.png" style="border: none;">
 	</div>
-	<script type="text/javascript">
-		if ("${error}" != "") {
-			alert("${error}");
-		};
-		function checkUserForm() {
-			document.loginform.submit();
-		}
-		function to_top(){
-			if(window != top){
-		        top.location.href=location.href;
-		    }
-		}
-	</script>
+</div>
+<div class="container" id="page-signin">
+	<c:if test="${error!=null}">
+		<div class="alert alert-danger fade in text-center">
+			<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+			<h5>
+				<i class="glyphicon glyphicon-warning-sign glyphicon-white"></i>
+				&nbsp;&nbsp;${error}
+			</h5>
+		</div>
+	</c:if>
+	<form id="loginform" name="loginform" action="${contextPath}/login.shtml" method="post">
+		<h4 class="form-signin-heading text-left">BT-AdMIN登录</h4>
+		<input type="text" name="username" class="form-control" placeholder='用户名' value="admin">
+		<input type="password" name="password" value="123456" class="form-control" placeholder='密码'>
+		<a href="javascript:checkUserForm()" type="submit" class="btn btn-danger">登录</a>
+		<a href="install.shtml" class="btn btn-link">一键初始化系统</a>
+	</form>
+</div>
+<div class="navbar navbar-default navbar-fixed-bottom text-center footer">
+	@copyright &nbsp;&nbsp;&nbsp;&nbsp;
+</div>
 </body>
 </html>
+<script type="text/javascript">
+	function checkUserForm() {
+		document.loginform.submit();
+	}
+	function to_top(){
+		if(window != top){
+			top.location.href=location.href;
+		}
+	}
+</script>
